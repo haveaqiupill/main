@@ -26,7 +26,7 @@ Refer to the guide <<SettingUp#, here>>.
 === Architecture
 
 .Architecture Diagram
-image::ArchitectureDiagram.png[]
+image::ArchitectureDiagram.png[width=400]
 
 The *_Architecture Diagram_* given above explains the high-level design of the App. Given below is a quick overview of each component.
 
@@ -139,7 +139,7 @@ The following sequence diagram illustrates how the `LogicToUiManager` can be use
 This diagram is also an extension of the <<test-sequence-diagram, sequence diagram>> found in that section.
 
 .Sequence diagram showing how LogicToUiManager accesses the Ui to display a question during a test session.
-image::LogicToUiSequenceDiagram.png[]
+image::LogicToUiSequenceDiagram.png[width=400]
 // end::ash-logictoui[]
 
 
@@ -147,7 +147,7 @@ image::LogicToUiSequenceDiagram.png[]
 === Model component
 
 .Structure of the Model Component
-image::ModelClassDiagram.png[]
+image::ModelClassDiagram.png[width=600]
 
 *API* : link:{repoURL}/src/main/java/cardibuddy/model/Model.java[`Model.java`]
 
@@ -162,7 +162,7 @@ The `Model`,
 === Storage component
 
 .Structure of the Storage Component
-image::StorageClassDiagram.png[]
+image::StorageClassDiagram.png[width=400]
 
 *API* : link:{repoURL}/src/main/java/cardibuddy/storage/Storage.java[`Storage.java`]
 
@@ -336,7 +336,7 @@ A sample command was mentioned in the example for `Flashcard` above: `add q/Is d
 
 The following sequence diagram shows how the `ParserUtil` class creates a `TfAnswer` answer based on the given sample command:
 
-image::ParserUtilTfDiagram.png[]
+image::ParserUtilTfDiagram.png[width=400]
 
 ===== McqAnswer
 For an `McqAnswer` to be associated with a `Card`, the user will have to enter
@@ -355,11 +355,9 @@ A sample command would be `add q/How does one go about solving recursion problem
 
 The following sequence diagram shows how the `ParserUtil` class creates a `ShortAnswer` answer based on the given sample command:
 
-image::ParserUtilShortAnsDiagram.png[]
-// end::jingying[]
+image::ParserUtilShortAnsDiagram.png[width=500]
 
 ==== Design Considerations
-// tag::design[]
 ===== Aspect: How to implement the different card and answer types
 
 * **Alternative 1 (current choice):** Using an abstract class to contain general functionalities.
@@ -414,17 +412,6 @@ These commands allow the user to perform the following during a test session:
 
 The above commands can only be triggered when certain conditions are met. The following table provides a summary of all the `Command` classes related to the test feature, as well as the conditions for their execution and exceptions thrown when these conditions are not met.
 
-.Summary of Test Feature Commands
-[width="59%",cols="5%,<5%,<25%,<60%,<5%",options="header",]
-|=======================================================================
-|Command Class|Corresponding user input|Description|Conditions|Exceptions Thrown
-|TestCommand|`test INDEX`|Creates a `TestSession` for the specified deck at that index.|-|EmptyDeckException
-|AnswerCommand|`ans USER_ANSWER`|Submits the user's answer to the `TestSession`.|The user has not already submitted an answer to the displayed question. The answer submitted must be comply with the question type (True False, MCQ, or Short Answer)|AlreadyAnsweredException, IncorrectAnswerFormatException
-|NextCommand|`next`|Displays the next question.|The user must already have answered the question.|UnansweredQuestionException
-|SkipCommand|`skip`|Skips the current question. Does not require the user to submit an answer.|The user must not have submitted a correct answer.|AlreadyCorrectException
-|QuitCommand|`quit`|Quits the test session.|-|-
-|ForceCommand|`force`|Forces CardiBuddy to mark the user's submitted answer as correct.|The user must have submitted an incorrect answer.|UnansweredQuestionException, AlreadyCorrectException
-|=======================================================================
 
 ==== Using the test feature
 ===== Starting a Test Session
@@ -675,7 +662,7 @@ Refer to the guide <<DevOps#, here>>.
 
 Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (unlikely to have) - `*`
 
-[width="59%",cols="22%,<23%,<25%,<30%",options="header",]
+[width="65%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority|As a ... |I want to ... |So that I can...
 |`* * *`|new user |see usage instructions |refer to instructions when I forget how to use CardiBuddy
@@ -874,8 +861,7 @@ Use case ends.
 ** ii. Use case ends.
 // end::ash-use-cases[]
 
-[discrete]
-==== Adding Decks and Flashcards
+
 === Use case: Add a new deck
 
 *MSS*
@@ -950,84 +936,3 @@ A session started by the user when the user wishes to test themselves on the con
 [[test-queue]] Test Queue::
 A temporary queue created when a Test Session is started. It stores the flashcards that either have not been tested yet, or have been tested but the user got wrong.
 // end::ash-glossary[]
-
-// tag::ash-product-survey[]
-[appendix]
-== Product Survey
-
-*Quizlet*
-
-Author: Andrew Sutherland
-
-Pros:
-
-* User can create an account
-* Clean user interface
-* Ability to search for decks created by other users
-* Ability to turn flashcard questions into 3 different kinds of questions: True and False, MCQ and short answer
-* 3 different ways to test self: Test, Write and Swipe/Flip
-* Ability to play a timed matching game to match questions to their answers
-* "Don't know" option if the user does not know the answer to the question.
-
-Cons:
-
-* Confusing options for tests: "write", "test" and "swipe/flip"
-** Both "write" and "test" tests the user on flashcard content.
-** However, "write" allows the user to force correct on the flashcard while "test" only allows the user to skip the question.
-** Hence answers need to be written word for word to be marked as correct when using "test"
-** The "swipe/flip" test option is not displayed together with the write and test options, and user has to navigate around before stumbling onto it.
-*** These similar options may overwhelm the user with too much choice.
-*** Naming of the options are also not clear (eg. "write")
-
-* Scrolling view of flashcards at the end of test sessions, instead of a list view of the cards and their outcomes.
-* Difficult to add a new flashcard to an existing deck
-** Had to explore many options before finding a "..." button at the top right hand corner, which displayed a dropdown list of options for the set. User has to select edit set, before being able to
-* More confusing naming
-** Statistics (not seen, familiar, mastered for flashcards are nested under the option "Learn"
-// end::ash-product-survey[]
-
-[appendix]
-== Instructions for Manual Testing
-
-Given below are instructions to test the app manually.
-
-[NOTE]
-These instructions only provide a starting point for testers to work on; testers are expected to do more _exploratory_ testing.
-
-=== Launch and Shutdown
-
-. Initial launch
-
-.. Download the jar file and copy into an empty folder
-.. Double-click the jar file +
-   Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
-
-. Saving window preferences
-
-.. Resize the window to an optimum size. Move the window to a different location. Close the window.
-.. Re-launch the app by double-clicking the jar file. +
-   Expected: The most recent window size and location is retained.
-
-_{ more test cases ... }_
-
-=== Deleting a deck
-
-. Deleting a deck while all decks are listed
-
-.. Prerequisites: List all decks using the `list` command. Multiple decks in the list.
-.. Test case: `delete deck 1` +
-   Expected: First deck is deleted from the list. Details of the deleted deck shown in the status message. Timestamp in the status bar is updated.
-.. Test case: `delete deck 0` +
-   Expected: No deck is deleted. Error details shown in the status message. Status bar remains the same.
-.. Other incorrect delete deck commands to try: `delete deck`, `delete deck x` (where x is larger than the list size) _{give more}_ +
-   Expected: Similar to previous.
-
-_{ more test cases ... }_
-
-=== Saving data
-
-. Dealing with missing/corrupted data files
-
-.. _{explain how to simulate a missing/corrupted file and the expected behavior}_
-
-_{ more test cases ... }_
