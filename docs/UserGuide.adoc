@@ -103,7 +103,7 @@ Format: `open 1`
 
 {empty} +
 
-=== Adding
+=== Adding (Jing Ying)
 
 ==== Adding a deck: `add d/TITLE`
 
@@ -296,7 +296,7 @@ Deletes the 1st card in the results of the search card command.
 
 {empty} +
 
-=== Searching
+=== Searching (Jing Ying)
 
 ==== Searching for a deck: `search deck`
 
@@ -344,7 +344,7 @@ Displays decks with both of the words `diagram` and `UML` in the questions.
 {empty} +
 
 // tag::filter[]
-=== Filtering
+=== Filtering (Jing Ying)
 
 ==== Filtering by tags: `filter`
 
@@ -367,7 +367,7 @@ Displays decks with both the tags `hard` and `coremodule`.
 {empty} +
 
 //tag::ash-testing[]
-=== Testing
+=== Testing (Ashleigh)
 ==== Overview
 Of course, you did not create all those decks and flashcards just so you can admire them! It's time to get your revision on. Start a `test session` for a deck to begin testing yourself!
 
@@ -464,7 +464,7 @@ Format: 'history'
 
 {empty} +
 
-=== Undo/Redo
+=== Undo/Redo (Phaedra)
 
 ==== Undoing command: `undo`
 

@@ -412,6 +412,17 @@ These commands allow the user to perform the following during a test session:
 
 The above commands can only be triggered when certain conditions are met. The following table provides a summary of all the `Command` classes related to the test feature, as well as the conditions for their execution and exceptions thrown when these conditions are not met.
 
+.Summary of Test Feature Commands
+[width="59%",cols="5%,<5%,<25%,<60%,<5%",options="header",]
+|=======================================================================
+|Command Class|Corresponding user input|Description|Conditions|Exceptions Thrown
+|TestCommand|`test INDEX`|Creates a `TestSession` for the specified deck at that index.|-|EmptyDeckException
+|AnswerCommand|`ans USER_ANSWER`|Submits the user's answer to the `TestSession`.|The user has not already submitted an answer to the displayed question. The answer submitted must be comply with the question type (True False, MCQ, or Short Answer)|AlreadyAnsweredException, IncorrectAnswerFormatException
+|NextCommand|`next`|Displays the next question.|The user must already have answered the question.|UnansweredQuestionException
+|SkipCommand|`skip`|Skips the current question. Does not require the user to submit an answer.|The user must not have submitted a correct answer.|AlreadyCorrectException
+|QuitCommand|`quit`|Quits the test session.|-|-
+|ForceCommand|`force`|Forces CardiBuddy to mark the user's submitted answer as correct.|The user must have submitted an incorrect answer.|UnansweredQuestionException, AlreadyCorrectException
+|=======================================================================
 
 ==== Using the test feature
 ===== Starting a Test Session
@@ -662,7 +673,7 @@ Refer to the guide <<DevOps#, here>>.
 
 Priorities: High (must have) - `* * \*`, Medium (nice to have) - `* \*`, Low (unlikely to have) - `*`
 
-[width="65%",cols="22%,<23%,<25%,<30%",options="header",]
+[width="59%",cols="22%,<23%,<25%,<30%",options="header",]
 |=======================================================================
 |Priority|As a ... |I want to ... |So that I can...
 |`* * *`|new user |see usage instructions |refer to instructions when I forget how to use CardiBuddy
@@ -861,7 +872,8 @@ Use case ends.
 ** ii. Use case ends.
 // end::ash-use-cases[]
 
-
+[discrete]
+==== Adding Decks and Flashcards
 === Use case: Add a new deck
 
 *MSS*
@@ -936,3 +948,107 @@ A session started by the user when the user wishes to test themselves on the con
 [[test-queue]] Test Queue::
 A temporary queue created when a Test Session is started. It stores the flashcards that either have not been tested yet, or have been tested but the user got wrong.
 // end::ash-glossary[]
+
+// tag::ash-product-survey[]
+[appendix]
+== Product Survey
+
+*Quizlet*
+
+Author: Andrew Sutherland
+
+Pros:
+
+* User can create an account
+* Clean user interface
+* Ability to search for decks created by other users
+* Ability to turn flashcard questions into 3 different kinds of questions: True and False, MCQ and short answer
+* 3 different ways to test self: Test, Write and Swipe/Flip
+* Ability to play a timed matching game to match questions to their answers
+* "Don't know" option if the user does not know the answer to the question.
+
+Cons:
+
+* Confusing options for tests: "write", "test" and "swipe/flip"
+** Both "write" and "test" tests the user on flashcard content.
+** However, "write" allows the user to force correct on the flashcard while "test" only allows the user to skip the question.
+** Hence answers need to be written word for word to be marked as correct when using "test"
+** The "swipe/flip" test option is not displayed together with the write and test options, and user has to navigate around before stumbling onto it.
+*** These similar options may overwhelm the user with too much choice.
+*** Naming of the options are also not clear (eg. "write")
+
+* Scrolling view of flashcards at the end of test sessions, instead of a list view of the cards and their outcomes.
+* Difficult to add a new flashcard to an existing deck
+** Had to explore many options before finding a "..." button at the top right hand corner, which displayed a dropdown list of options for the set. User has to select edit set, before being able to
+* More confusing naming
+** Statistics (not seen, familiar, mastered for flashcards are nested under the option "Learn"
+// end::ash-product-survey[]
+
+[appendix]
+== Instructions for Manual Testing
+
+Given below are instructions to test the app manually.
+
+[NOTE]
+These instructions only provide a starting point for testers to work on; testers are expected to do more _exploratory_ testing.
+
+=== Launch and Shutdown
+
+. Initial launch
+
+.. Download the jar file and copy into an empty folder
+.. Double-click the jar file +
+   Expected: Shows the GUI with a set of 5 sample decks. The first deck will contain 4 sample flashcards, while the rest are empty.
+
+. Saving window preferences
+
+.. Resize the window to an optimum size. Move the window to a different location. Close the window or type `exit` into the command box.
+.. Re-launch the app by double-clicking the jar file. +
+   Expected: The most recent window size and location is retained.
+
+_{ more test cases ... }_
+
+=== Modifying decks and flashcards
+. Adding a deck
+
+.. Prerequisites: Not running a test session.
+.. Test case: `add d/NewDeck` +
+   Expected: Add a new deck to the bottom of the list called "NewDeck" with no tags and 0 cards. The status message will say that there are no tags and 0 cards on the deck, alongside the name of the deck.
+
+. Open a deck
+.. Prerequisites: Not running a test session, has at least one deck.
+.. Test case: `open 1` +
+Expected: Shows up the list of flashcards in the first deck. Status message will notify which deck you have opened.
+
+. Adding a flashcard
+.. Prerequisites: Has a deck open with the `open` command.
+.. Test case: `add q/What is the powerhouse of the cell? a/Mitochondria` +
+Expected: List of flashcards should update with the newest card, showing the Question and answer.
+
+=== Running a Test Session
+
+. Running a test session
+
+.. Prerequisites: Has a deck with at least one flashcards.
+.. Test case: `test [DECK_INDEX]` +
+   Expected: The list of decks and cards should be covered by the test session panel. Status message will have instructions on how to proceed.
+.. Test case: `test [DECK_INDEX_WITHOUT_CARDS]` +
+   Expected: No new panel covering, status message notifies that there are no cards.
+
+. Answering a test session
+
+.. Prerequisites: Test session is running.
+.. Test case: `ans [CORRECT_ANSWER]` +
+Expected: Test panel notifies your correct answer, shows the whole question to recap, and urges to type in `next` to go to the next question.
+.. Test case `add d/Deck` +
+Expected: An error message appears, saying you can't modify the model while in a test session.
+
+_{ more test cases ... }_
+
+=== Saving data
+
+. Dealing with missing/corrupted data files
+
+.. _{explain how to simulate a missing/corrupted file and the expected behavior}_
+
+_{ more test cases ... }_
